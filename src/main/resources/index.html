@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Face Generator</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <p>
+            <span class="title">Face Generator</span><br>
+            by Hilmi Yafi Al-Faruq 2024
+        </p>
+        <div class="content">
+            <div class="image-placeholder" id="imagePlaceholder">
+                <img id="placeholderImage" src="" alt="">
+            </div>
+            <div class="slider-grid">
+                <input type="range" min="-2" max="2" value="0" step="0.1">
+                <input type="range" min="-2" max="2" value="0" step="0.1">
+                <input type="range" min="-2" max="2" value="0" step="0.1">
+                <input type="range" min="-2" max="2" value="0" step="0.1">
+                <input type="range" min="-2" max="2" value="0" step="0.1">
+                <input type="range" min="-2" max="2" value="0" step="0.1">
+                <input type="range" min="-2" max="2" value="0" step="0.1">
+                <input type="range" min="-2" max="2" value="0" step="0.1">
+                <input type="range" min="-2" max="2" value="0" step="0.1">
+                <input type="range" min="-2" max="2" value="0" step="0.1">
+                <input type="range" min="-2" max="2" value="0" step="0.1">
+                <input type="range" min="-2" max="2" value="0" step="0.1">
+                <input type="range" min="-2" max="2" value="0" step="0.1">
+                <input type="range" min="-2" max="2" value="0" step="0.1">
+                <input type="range" min="-2" max="2" value="0" step="0.1">
+                <input type="range" min="-2" max="2" value="0" step="0.1">
+            </div>
+            <div class="button-container">
+                <button id="randomizeButton">Randomize</button>
+                <button id="resetButton">Reset</button>
+                <button id="saveButton">Save Image</button>
+            </div>
+        </div>
+        <script>
+            function updateImage() {
+                const sliders = document.querySelectorAll('input[type="range"]');
+                const sliderValues = Array.from(sliders).map(slider => parseFloat(slider.value));
+                const imageUrl = `/image?values=${sliderValues.join(',')}`;
+                const placeholderImage = document.getElementById('placeholderImage');
+                placeholderImage.src = imageUrl;
+            }
+
+            document.querySelectorAll('input[type="range"]').forEach(slider => {
+                slider.addEventListener('input', updateImage);
+            });
+
+            document.getElementById('randomizeButton').onclick = function() {
+                const sliders = document.querySelectorAll('input[type="range"]');
+                sliders.forEach(slider => slider.value = (Math.random() * 4 - 2).toFixed(1));
+                updateImage();
+            };
+
+            document.getElementById('resetButton').onclick = function() {
+                const sliders = document.querySelectorAll('input[type="range"]');
+                sliders.forEach(slider => slider.value = 0);
+                updateImage();
+            };
+
+            document.getElementById('saveButton').onclick = function() {
+                const placeholderImage = document.getElementById('placeholderImage');
+                const imageUrl = placeholderImage.src;
+                const link = document.createElement('a');
+                link.href = imageUrl;
+                link.download = 'face.png';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            };
+
+            updateImage();
+        </script>
+    </body>
+</html>
